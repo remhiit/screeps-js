@@ -3,6 +3,7 @@ import {Harvester} from "./role/harvester";
 import {Upgrader} from "./role/upgrader";
 import {Builder} from "./role/builder";
 import {renewCrew} from "./crew/maintain";
+import { CreepRole } from "./role/definition";
 
 declare global {
     /*
@@ -20,11 +21,7 @@ declare global {
         log: any;
     }
 
-    enum CreepRole {
-        HARVESTER,
-        UPGRADER,
-        BUILDER,
-    }
+
 
     interface CreepMemory {
         role: CreepRole;
@@ -61,7 +58,7 @@ function tower() {
 
 // This utility uses source maps to get the line numbers and file names of the original, TS source code
 export const loop = ErrorMapper.wrapLoop(() => {
-    console.log(`Current game tick is ${Game.time}`);
+    //console.log(`Current game tick is ${Game.time}`);
     tower()
     renewCrew();
     // Automatically delete memory of missing creeps
@@ -69,8 +66,6 @@ export const loop = ErrorMapper.wrapLoop(() => {
         if (!(name in Game.creeps)) {
             delete Memory.creeps[name];
         }
-
-
 
         const creep = Memory.creeps[name];
         switch (creep.role) {
@@ -83,6 +78,8 @@ export const loop = ErrorMapper.wrapLoop(() => {
             case CreepRole.BUILDER:
                 Builder.main(Game.creeps[name]);
                 break;
+          default:
+            break;
         }
     }
 
