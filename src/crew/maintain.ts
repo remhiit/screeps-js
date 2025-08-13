@@ -1,12 +1,13 @@
 import { CreepRole } from "../role/definition";
+import { spawnName } from "../constant";
 
 function canSpawn(body: BodyPartConstant[]): boolean {
-  return Game.spawns["Spawn1"].spawnCreep(body, "test", { dryRun: true }) === OK;
+  return Game.spawns[spawnName].spawnCreep(body, "test", { dryRun: true }) === OK;
 }
 
 function spawn(name: string, role: CreepRole, specificity: BodyPartConstant[]) {
   console.log("Spawning new creep : " + name);
-  Game.spawns["Spawn1"].spawnCreep(specificity, name, {
+  Game.spawns[spawnName].spawnCreep(specificity, name, {
     memory: {
       room: "Spawn1",
       role: role,
@@ -28,21 +29,18 @@ export function renewCrew() {
     spawn("Upgrader" + Game.time, CreepRole.UPGRADER, [WORK, CARRY, MOVE]);
   }
   if (builder.length < 1 && canSpawn([WORK, CARRY, MOVE])) {
-    spawn("builder" + Game.time, CreepRole.UPGRADER, [WORK, CARRY, MOVE]);
-  }
-  if (builder.length < 1 && canSpawn([WORK, CARRY, MOVE])) {
-    spawn("builder" + Game.time, CreepRole.UPGRADER, [WORK, CARRY, MOVE]);
+    spawn("Builder" + Game.time, CreepRole.BUILDER, [WORK, CARRY, MOVE]);
   }
   if (soldier.length < 1 && canSpawn([MOVE, MOVE, ATTACK, ATTACK])) {
-    spawn("soldier" + Game.time, CreepRole.UPGRADER, [MOVE, MOVE, ATTACK, ATTACK]);
+    spawn("Soldier" + Game.time, CreepRole.SOLDIER, [MOVE, MOVE, ATTACK, ATTACK]);
   }
 
-  if (Game.spawns["Spawn1"].spawning) {
-    const spawningCreep = Game.creeps[Game.spawns["Spawn1"].spawning.name];
-    Game.spawns["Spawn1"].room.visual.text(
+  if (Game.spawns[spawnName].spawning) {
+    const spawningCreep = Game.creeps[Game.spawns[spawnName].spawning.name];
+    Game.spawns[spawnName].room.visual.text(
       "🛠️" + spawningCreep.memory.role,
-      Game.spawns["Spawn1"].pos.x + 1,
-      Game.spawns["Spawn1"].pos.y,
+      Game.spawns[spawnName].pos.x + 1,
+      Game.spawns[spawnName].pos.y,
       { align: "left", opacity: 0.8 }
     );
   }

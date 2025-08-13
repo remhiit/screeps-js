@@ -4,6 +4,7 @@ import {Upgrader} from "./role/upgrader";
 import {Builder} from "./role/builder";
 import {renewCrew} from "./crew/maintain";
 import { CreepRole } from "./role/definition";
+import { buildStructure } from "./structure/main";
 
 declare global {
     /*
@@ -61,6 +62,8 @@ export const loop = ErrorMapper.wrapLoop(() => {
     //console.log(`Current game tick is ${Game.time}`);
     tower()
     renewCrew();
+    buildStructure();
+
     // Automatically delete memory of missing creeps
     for (const name in Memory.creeps) {
         if (!(name in Game.creeps)) {
